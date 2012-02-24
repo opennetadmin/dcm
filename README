@@ -1,0 +1,44 @@
+DCM.PL
+======
+
+INSTALL
+-------
+This tool can be installed on just about any system that has perl installed. It is
+simply a command line interface to the modules that ONA uses to do work in 
+the core. There are two files that need to be placed in your operating
+system somewhere.
+
+dcm.pl: This is the main program file. It needs to be in `/opt/ona/bin`. 
+        If you choose to install it elsewhere, like `/usr/local/bin` for instance,
+        you should have a symlink that points to it in `/opt/ona/bin` as
+        there are several ONA related processes that expect it to be there.
+        In the event you have not installed ONA in `/opt/ona`, then put
+        it in `$ONABASE/bin`.
+
+dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for 
+          the configuration file in the following locations and it will
+          use the first one it finds in this list:
+
+    `'./.dcm/dcm.conf'`,
+    `'./dcm.conf'`,
+    `$homedir . '/.dcm/dcm.conf'`,
+    `$homedir . '/dcm.conf'`,
+    `$onabase . '/etc/dcm.conf'`,
+    `'/opt/ona/etc/dcm.conf'`,
+    `'/etc/dcm.conf'`,
+    `'/etc/dcm/dcm.conf'`
+
+          You can also specify any path using the -c commandline option.
+
+CONFIGURATION
+-------------
+You will need to adjust the 'url' value in the [networking] section of the 
+config file. This is the URL to the dcm.php file. This file is in the same 
+directory as the main ONA index.php file would be located. So if you reach 
+the ONA website by using http://myserver.example.com/ipam/ then use the same 
+url but just tack on dcm.php. Some examples might be:
+
+    url                      => https://localhost/ona/dcm.php
+    url                      => http://myserver.example.com/ipam/dcm.php
+
+
