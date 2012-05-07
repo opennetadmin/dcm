@@ -32,7 +32,7 @@ dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for
     `'/etc/dcm.conf'`,
     `'/etc/dcm/dcm.conf'`
 
-          You can also specify any path using the -c commandline option.
+You can also specify any path using the -c commandline option.
 
 CONFIGURATION
 -------------
@@ -84,63 +84,63 @@ They can also use -l and -p but the ENV option provides a more convenient way
 of dealing with this. You can also use these in cron jobs or other batch 
 scripts to control access. The two variables to set are:
 
-   DCM_LOGIN_USER
-   DCM_LOGIN_PASS
+    DCM_LOGIN_USER
+    DCM_LOGIN_PASS
 
 USAGE
 -----
 Once you have installed via the steps above, you can test that it is
 functioning by issuing the following command:
 
-   dcm.pl --list
+    dcm.pl --list
 
 This should return a large list of modules and their descriptions. If not,
 then you should see an error message explaining the issue.
 
 Here is an example of some of the modules available:
 
-   interface_move            :: Move an interface from one subnet to another
-   interface_move_host       :: Moves an interface from one host to another
-   interface_share           :: Share an existing interface with another host
-   interface_share_del       :: Delete an interface share entry
-   location_add              :: Add a location record
-   location_del              :: Delete a location
-   location_modify           :: Modify a location record
-   mangle_ip                 :: Converts between various IP address representations
-   nat_add                   :: Add external NAT IP to existing internal IP
-   nat_del                   :: Delete external NAT IP from existing internal IP
-   ona_sql                   :: Perform basic SQL operations on the database
-   report_run                :: Run a report
-   subnet_add                :: Add a new subnet
-   subnet_del                :: Delete an existing subnet
-   subnet_display            :: Display an existing subnet
-   subnet_modify             :: Modify an existing subnet
-   subnet_nextip             :: Return the next available IP address on a subnet
-   vlan_add                  :: Add a VLAN
-   vlan_campus_add           :: Add a VLAN campus (VTP Domain)
-   vlan_campus_del           :: Delete a VLAN campus
-   vlan_campus_modify        :: Modify a VLAN campus record
-   vlan_del                  :: Delete a VLAN
-   vlan_modify               :: Modify a VLAN
+    interface_move            :: Move an interface from one subnet to another
+    interface_move_host       :: Moves an interface from one host to another
+    interface_share           :: Share an existing interface with another host
+    interface_share_del       :: Delete an interface share entry
+    location_add              :: Add a location record
+    location_del              :: Delete a location
+    location_modify           :: Modify a location record
+    mangle_ip                 :: Converts between various IP address representations
+    nat_add                   :: Add external NAT IP to existing internal IP
+    nat_del                   :: Delete external NAT IP from existing internal IP
+    ona_sql                   :: Perform basic SQL operations on the database
+    report_run                :: Run a report
+    subnet_add                :: Add a new subnet
+    subnet_del                :: Delete an existing subnet
+    subnet_display            :: Display an existing subnet
+    subnet_modify             :: Modify an existing subnet
+    subnet_nextip             :: Return the next available IP address on a subnet
+    vlan_add                  :: Add a VLAN
+    vlan_campus_add           :: Add a VLAN campus (VTP Domain)
+    vlan_campus_del           :: Delete a VLAN campus
+    vlan_campus_modify        :: Modify a VLAN campus record
+    vlan_del                  :: Delete a VLAN
+    vlan_modify               :: Modify a VLAN
 
 You can also run dcm.pl on its own to get help text. The typical usage is as follows:
 
-   dcm.pl -r <modulename>
+    dcm.pl -r <modulename>
 
 This should then display the usage information for the specified module. 
 Lets assume you have selected `host_display` as your module. You would run 
 dcm.pl with that module name with its required option of `host` and optional 
 verbose flag, which would look something like this:
 
-   $ dcm.pl -r host_display host=test.example.com verbose=n
-   HOST RECORD (test.example.com)
-     id                          23
-     primary_dns_id              62
-     device_id                   15
-     name                        test
-     fqdn                        test.example.com
-     domain_id                   1                   (example.com)
-     domain_fqdn                 example.com
+    $ dcm.pl -r host_display host=test.example.com verbose=n
+    HOST RECORD (test.example.com)
+      id                          23
+      primary_dns_id              62
+      device_id                   15
+      name                        test
+      fqdn                        test.example.com
+      domain_id                   1                   (example.com)
+      domain_fqdn                 example.com
 
 
 NOTE: One feature of dcm.pl is that it can take files as input. So if I pass dcm.pl 
