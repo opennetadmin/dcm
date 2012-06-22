@@ -1320,7 +1320,7 @@ sub getPage {
 initialize();
 
 ## Get contents of /etc/onabase, and trim it
-my $onabase =  qx(cat /etc/onabase);
+my $onabase =  qx(cat /etc/onabase 2>/dev/null);
 $onabase =~ s/\s+$//;
 
 ## Search for a configuration file
