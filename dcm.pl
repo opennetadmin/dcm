@@ -71,6 +71,8 @@
 ##  
 ##  Changelog:
 ##
+##	06/22/2012 - v1.19 - Matt Pascoe
+##          - Fix issues with URL parsing of the connector URL.
 ##	01/25/2011 - v1.19 - Matt Pascoe
 ##          - Added ability to use username and password set in ENV variables.
 ##            Just set DCM_LOGIN_USER and/or DCM_LOGIN_PASS
@@ -184,7 +186,7 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.19-ona',                      ## The version of this program
+    'version'              => '1.20-ona',                      ## The version of this program
     'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
     'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
@@ -1371,17 +1373,15 @@ if ($networking{'URL'}) { $networking{'url'} = $networking{'URL'}; }
 ## Parse $networking{'url'} into it's various parts
 ## url should look like this: http[s]://server[:port]/url
 ##
-if ($networking{'url'} !~ /(\w+):\/\/([\w.]+)(:\d+)?(\/.*$)/) {
+if ($networking{'url'} !~ /^((http[s]?):\/)?\/?([^:\/\s]+)(:([^\/]*))?((\/\w+)*\/)([\w\-\.]+[^#?\s]+)/) {
     quit("ERROR => Invalid connector URL: $networking{'url'}", 1);
 }
-if ($1 eq 'http')     { $networking{'ssl'} = 0; $networking{'port'} = 80; }
-elsif ($1 eq 'https') { $networking{'ssl'} = 1; $networking{'port'} = 443; }
-else { quit("ERROR => Invalid protocol: $1", 1); }
-$networking{'host'} = $2;
-$networking{'uri'} = $4;
-if ($3 and $3 =~ /^:(\d+)/) {
-    $networking{'port'} = $1;
-}
+if ($2 eq 'http')     { $networking{'ssl'} = 0; $networking{'port'} = 80; }
+elsif ($2 eq 'https') { $networking{'ssl'} = 1; $networking{'port'} = 443; }
+else { quit("ERROR => Invalid protocol: $2", 1); }
+$networking{'host'} = $3;
+$networking{'uri'}  = $6.$8;
+if ($5) { $networking{'port'} = $5; }
 
 
 
