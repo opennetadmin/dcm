@@ -71,7 +71,9 @@
 ##  
 ##  Changelog:
 ##
-##	06/22/2012 - v1.19 - Matt Pascoe
+##	07/05/2012 - v1.21 - Matt Pascoe
+##          - Fix deprication warnings about qw
+##	06/22/2012 - v1.20 - Matt Pascoe
 ##          - Fix issues with URL parsing of the connector URL.
 ##	01/25/2011 - v1.19 - Matt Pascoe
 ##          - Added ability to use username and password set in ENV variables.
@@ -186,7 +188,7 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.20-ona',                      ## The version of this program
+    'version'              => '1.21-ona',                      ## The version of this program
     'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
     'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
@@ -248,7 +250,7 @@ my %opt = ();
 
 ## Load Time::HiRes if it's available
 eval { require Time::HiRes; };
-unless ($@) { Time::HiRes->import qw(time); }
+unless ($@) { Time::HiRes->import (qw(time)); }
 
 
 ## Load IO::Socket::SSL if it's available
@@ -303,7 +305,7 @@ if ($conf{'hostname'} eq 'localhost') {
         ## Try the hostname module
         eval { require Sys::Hostname; };
         unless ($@) {
-            Sys::Hostname->import qw(hostname);
+            Sys::Hostname->import (qw(hostname));
             $conf{'hostname'} = lc(hostname());
         }
     }
