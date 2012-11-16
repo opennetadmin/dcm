@@ -25,6 +25,8 @@ dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for
 
     `'./.dcm/dcm.conf'`,
     `'./dcm.conf'`,
+    `$xdg_config_home . '/dcm/dcm.conf'`,
+    `$homedir . '/.config/dcm/dcm.conf'`,
     `$homedir . '/.dcm/dcm.conf'`,
     `$homedir . '/dcm.conf'`,
     `$onabase . '/etc/dcm.conf'`,
