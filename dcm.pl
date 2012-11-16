@@ -1328,11 +1328,13 @@ $onabase =~ s/\s+$//;
 ## Search for a configuration file
 my $homedir = "~";
 if ($ENV{'HOME'}) { $homedir = $ENV{'HOME'}; }
+my $xdg_config_home = $ENV{'XDG_CONFIG_HOME'} || $homedir . '/.config';
 if ($ENV{'HOMEDRIVE'} and $ENV{'HOMEPATH'}) { $homedir = $ENV{'HOMEDRIVE'} . $ENV{'HOMEPATH'}; }
 my @file_list = (
     $conf{'configurationFile'},
     './.dcm/dcm.conf',
     './dcm.conf',
+    $xdg_config_home . '/dcm/dcm.conf',
     $homedir . '/.dcm/dcm.conf',
     $homedir . '/dcm.conf',
     $onabase . '/etc/dcm.conf',
