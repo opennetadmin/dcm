@@ -71,6 +71,9 @@
 ##  
 ##  Changelog:
 ##
+##	10/19/2015 - v1.22 - Matt Pascoe
+##          - Add SSL_VERIFY_NONE option to bypass checks. Need to make this an
+##            option in the future.
 ##	07/05/2012 - v1.21 - Matt Pascoe
 ##          - Fix deprication warnings about qw
 ##	06/22/2012 - v1.20 - Matt Pascoe
@@ -188,7 +191,7 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.21-ona',                      ## The version of this program
+    'version'              => '1.22-ona',                      ## The version of this program
     'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
     'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
@@ -1333,7 +1336,6 @@ if ($ENV{'HOMEDRIVE'} and $ENV{'HOMEPATH'}) { $homedir = $ENV{'HOMEDRIVE'} . $EN
 my @file_list = (
     $conf{'configurationFile'},
     './.dcm/dcm.conf',
-    './dcm.conf',
     $xdg_config_home . '/dcm/dcm.conf',
     $homedir . '/.dcm/dcm.conf',
     $homedir . '/dcm.conf',
@@ -1443,6 +1445,8 @@ if ($networking{'ssl'} == 1 && $networking{'sslAvailable'} == 1) {
                                        Proto     => 'tcp',
                                        Autoflush => 1,
                                        Blocking  => 1,
+                                       # not optimal but its here for now.
+                                       SSL_verify_mode => IO::Socket::SSL->SSL_VERIFY_NONE,
                                        timeout   => $networking{'timeout'},
     ) or do {
         if ($networking{'allow-http-fallback'} == 0) {
