@@ -949,9 +949,9 @@ sub processCommandLine {
         ## configuration file
         elsif ($ARGS[$counter] eq '-c') {
             $counter++;
-            $conf{'configurationFile'} = $ARGS[$counter];
-            if (! -e $conf{'configurationFile'}) {
-                printmsg("WARNING => Configuration file specified, $conf{'configurationFile'} , doesn't exist!", 0);
+            $conf{'confspecific'} = $ARGS[$counter];
+            if (! -e $conf{'confspecific'}) {
+                printmsg("WARNING => Configuration file specified, $conf{'confspecific'} , doesn't exist!", 0);
             }
         }
         
@@ -1334,7 +1334,6 @@ if ($ENV{'HOME'}) { $homedir = $ENV{'HOME'}; }
 my $xdg_config_home = $ENV{'XDG_CONFIG_HOME'} || $homedir . '/.config';
 if ($ENV{'HOMEDRIVE'} and $ENV{'HOMEPATH'}) { $homedir = $ENV{'HOMEDRIVE'} . $ENV{'HOMEPATH'}; }
 my @file_list = (
-    $conf{'configurationFile'},
     './.dcm/dcm.conf',
     $xdg_config_home . '/dcm/dcm.conf',
     $homedir . '/.dcm/dcm.conf',
@@ -1352,6 +1351,11 @@ foreach my $file (@file_list) {
     }
 }
 
+## Process Command Line
+processCommandLine();
+
+if ($conf{'confspecific'}) { $conf{'configurationFile'} = $conf{'confspecific'}; }
+
 ## Read the configuration file
 readConfigurationFile($conf{'configurationFile'}, "networking", \%networking);
 readConfigurationFile($conf{'configurationFile'}, "logging", \%logging);
@@ -1363,9 +1367,6 @@ if ($ENV{'DCM_LOGIN_USER'} ) {
 if ($ENV{'DCM_LOGIN_PASS'} ) {
     $networking{'passwd'} = $ENV{'DCM_LOGIN_PASS'}
 }
-
-## Process Command Line
-processCommandLine();
 
 ## Setup http basic auth if needed
 if ($networking{'login'}) {
