@@ -24,7 +24,6 @@ dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for
           use the first one it finds in this list:
 
     `'./.dcm/dcm.conf'`,
-    `'./dcm.conf'`,
     `$xdg_config_home . '/dcm/dcm.conf'`,
     `$homedir . '/.config/dcm/dcm.conf'`,
     `$homedir . '/.dcm/dcm.conf'`,
