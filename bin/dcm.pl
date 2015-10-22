@@ -71,6 +71,8 @@
 ##  
 ##  Changelog:
 ##
+##	10/22/2015 - v1.23 - Matt Pascoe
+##          - move to bin and etc dirs as well as create a make-package script
 ##	10/19/2015 - v1.22 - Matt Pascoe
 ##          - Add SSL_VERIFY_NONE option to bypass checks. Need to make this an
 ##            option in the future.
@@ -191,7 +193,7 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.22-ona',                      ## The version of this program
+    'version'              => '1.23',                          ## The version of this program
     'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
     'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
@@ -821,6 +823,7 @@ $conf{'colorGreen'}  Logging Options: $conf{'colorNormal'}
     --nostdout              don't print messages to STDOUT
     --syslog                syslog all messages
     --logfile=FILE          log all messages to the specified file
+    --version               print the version number
 
 EOM
 exit(1);
@@ -991,6 +994,12 @@ sub processCommandLine {
         ## log file
         elsif ($ARGS[$counter] =~ /^--logfile=(.*)/i) {
             $logging{'logFile'} = $1;
+        }
+
+        ## version
+        elsif ($ARGS[$counter] =~ /^--version/i) {
+            print "$conf{'version'}\n"; 
+            exit(1);
         }
         
         ## help

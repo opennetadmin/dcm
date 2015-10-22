@@ -12,16 +12,16 @@ simply a command line interface to the modules that ONA uses to do work in
 the core. There are two files that need to be placed in your operating
 system somewhere.
 
-dcm.pl: This is the main program file. It needs to be in `/opt/ona/bin`. 
+bin/dcm.pl: This is the main program file. It needs to be in `/opt/ona/bin`. 
         If you choose to install it elsewhere, like `/usr/local/bin` for instance,
         you should have a symlink that points to it in `/opt/ona/bin` as
         there are several ONA related processes that expect it to be there.
         In the event you have not installed ONA in `/opt/ona`, then put
         it in `$ONABASE/bin`.
 
-dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for 
-          the configuration file in the following locations and it will
-          use the first one it finds in this list:
+etc/dcm.conf: This is the configuration file for dcm.pl. The prefered location
+          is `/opt/ona/etc` but dcm.pl will look for the configuration file
+          in the following locations and will use the first one it finds:
 
     `'./.dcm/dcm.conf'`,
     `$xdg_config_home . '/dcm/dcm.conf'`,
@@ -34,6 +34,10 @@ dcm.conf: This is the configuration file for dcm.pl. dcm.pl will look for
     `'/etc/dcm/dcm.conf'`
 
 You can also specify any path using the -c commandline option.
+
+If you desire you can run make-package.sh to build a system package of dcm.
+It utilizes the fpm package tool to create a package.  By default it will
+create .deb packages but should be easily updated to .rpm or others.
 
 CONFIGURATION
 -------------
