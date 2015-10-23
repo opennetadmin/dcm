@@ -1355,7 +1355,6 @@ my @file_list = (
 foreach my $file (@file_list) {
     if (-e $file) {
         $conf{'configurationFile'} = $file;
-        printmsg("DEBUG => Found configuration file at $file", 1);
         last;
     }
 }
@@ -1364,6 +1363,8 @@ foreach my $file (@file_list) {
 processCommandLine();
 
 if ($conf{'confspecific'}) { $conf{'configurationFile'} = $conf{'confspecific'}; }
+
+printmsg("DEBUG => Using configuration file at $conf{'configurationFile'}", 1);
 
 ## Read the configuration file
 readConfigurationFile($conf{'configurationFile'}, "networking", \%networking);
