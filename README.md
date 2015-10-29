@@ -39,6 +39,9 @@ If you desire you can run make-package.sh to build a system package of dcm.
 It utilizes the fpm package tool to create a package.  By default it will
 create .deb packages but should be easily updated to .rpm or others.
 
+You can also copy the bash_completion file over, if desired using
+`cp dcm-completion /etc/bash_completion.d/dcm.pl`
+
 CONFIGURATION
 -------------
 You will need to adjust the 'url' value in the [networking] section of the 

@@ -1,0 +1,27 @@
+# Place this file in your /etc/bash_completion.d directory with the name dcm.pl
+_dcm.pl()
+{
+  local binary current previous modules
+
+  binary=$(which dcm.pl)
+
+  if [[ -x "${binary}" ]] ; then
+    COMPREPLY=()
+
+    current=${COMP_WORDS[COMP_CWORD]}
+    previous=${COMP_WORDS[COMP_CWORD - 1]}
+
+    if [[ "$previous" == "-r" ]]; then
+      modules=$( "${binary}" --list | awk '{print $1}'|tail -n +3 )
+      COMPREPLY=( $(compgen -W "${modules}" -- ${current}) )
+    else
+      COMPREPLY=( $( compgen -W '-r -c -u -l -p -v --list --symlink \
+                     --syslog --logfile -nostdout' -- ${current}) )
+    fi
+
+  fi
+
+  return 0
+}
+
+complete -F _dcm.pl dcm.pl
