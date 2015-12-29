@@ -1412,7 +1412,7 @@ my $option_string = "";
 $opt{'unix_username'} = $conf{'unix_username'};
 foreach my $key (keys(%opt)) {
     ## If the value specified is a file, or -, load the file's contents (or STDIN) as the value
-    if ( (-e $opt{$key} and -r $opt{$key}) or ($opt{$key} eq '-') ) {
+    if ( (-e $opt{$key} and -r $opt{$key} and -f $opt{$key} ) or ($opt{$key} eq '-') ) {
         my $FILE;
         if(!open($FILE, ' ' . $opt{$key})) {
             quit("ERROR => couldn't open input file, $opt{$key}, $!", 1);
