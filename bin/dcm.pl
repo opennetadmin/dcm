@@ -1257,15 +1257,17 @@ sub getPage {
     ## If it's chunked data encoding
     if ($contentEncoding =~ /chunked/io) {
         ## Read lines
-        my $cLength = -1;
         my $cRemaining = -1;
+        my $cFooters = 0;                                        # Are we processing footers? 
         while (my $line = getline($socket)) {
             
             ## Read the chunk header
-            if ($cLength == -1) {
+            if ($cRemaining == -1) {
                 $line =~ /^(\w+)/o;
-                $cLength = $cRemaining = hex($1);
-                printmsg("DEBUG => Receiving chunked message: $cLength bytes", 2);
+                $cRemaining = hex($1);
+                printmsg("DEBUG => Receiving chunked message: $cRemaining bytes", 2);
+                ## Chunk footers are indicated by a chunk length of 0. 
+                if( $cRemaining == 0 ) { $cFooters = 1; next; }
             }
             
             ## Receive the body of the chunked message
@@ -1274,14 +1276,19 @@ sub getPage {
                 $cRemaining -= length($line);
                 $data .= substr($line, 0, $cRemaining);
             }
-            
-            ## cRemaining will be -2 when we're done receiving a chunk
-            ## so read any remaining chunk footers
-            elsif ($cRemaining == -2) {
-                ## If we're at the end of footers, set $cRemaining to -1 so it will start reading headers again.
+            elsif( $cFooters ) {                                # If processing footers, then add footers to headers. (No, really).
                 if ($line eq "\r\n") {
-                    $cRemaining = -1;
+                    $cRemaining = -1;                           # End of footers.
+                } else { 
+                    $headers .= $line; 
                 }
+            } 
+
+            ## cRemaining will be -2 when we're done receiving a chunk 
+            ## so read any remaining chunk footers
+            if ($cRemaining == -2) {
+                                                                # Set $cRemaining to -1 so it will start reading chunk headers again.
+                $cRemaining = -1;                               # We should always start a new chunk once we're done with one.
             }
         }
     }
