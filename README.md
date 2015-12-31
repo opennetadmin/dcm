@@ -53,6 +53,11 @@ url but just tack on dcm.php. Some examples might be:
     url                      => https://localhost/ona/dcm.php
     url                      => http://myserver.example.com/ipam/dcm.php
 
+The dcm.pl user will also need to be manually created via the ONA GUI.  For
+ more detail on how you can leverage a different user, please see the 
+SECURITY section. Once that user is created, be sure to also give it the 
+"interface_modify" and "ona_sql" permissions via the Permissions Editor - 
+also in the ONA GUI.
 
 SECURITY
 --------
