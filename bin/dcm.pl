@@ -71,6 +71,9 @@
 ##  
 ##  Changelog:
 ##
+##      12/30/2015 - v1.24 - David Holland
+##          - Make certain options files are actually files. 
+##          - Fix chunked encoding to transfer more than one chunk.
 ##	10/22/2015 - v1.23 - Matt Pascoe
 ##          - move to bin and etc dirs as well as create a make-package script
 ##	10/19/2015 - v1.22 - Matt Pascoe
@@ -193,9 +196,9 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.23',                          ## The version of this program
-    'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
-    'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
+    'version'              => '1.24',                          ## The version of this program
+    'authorName'           => 'Brandon Zehm/Matt Pascoe/David Holland',      ## Author's Name
+    'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com/david.w.holland@gmail.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
     
 );
