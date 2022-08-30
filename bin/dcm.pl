@@ -71,6 +71,9 @@
 ##  
 ##  Changelog:
 ##
+##      12/30/2015 - v1.24 - David Holland
+##          - Make certain options files are actually files. 
+##          - Fix chunked encoding to transfer more than one chunk.
 ##	10/22/2015 - v1.23 - Matt Pascoe
 ##          - move to bin and etc dirs as well as create a make-package script
 ##	10/19/2015 - v1.22 - Matt Pascoe
@@ -193,9 +196,9 @@ my %conf = (
     'colorCyan'            => "\033[36;1m",
     
     ## Script specific settings
-    'version'              => '1.23',                          ## The version of this program
-    'authorName'           => 'Brandon Zehm/Matt Pascoe',      ## Author's Name
-    'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com',           ## Author's Email Address
+    'version'              => '1.24',                          ## The version of this program
+    'authorName'           => 'Brandon Zehm/Matt Pascoe/David Holland',      ## Author's Name
+    'authorEmail'          => 'caspian@dotconf.net/matt@opennetadmin.com/david.w.holland@gmail.com',           ## Author's Email Address
     'configurationFile'    => '',                              ## Configuration file location
     
 );
@@ -1257,15 +1260,17 @@ sub getPage {
     ## If it's chunked data encoding
     if ($contentEncoding =~ /chunked/io) {
         ## Read lines
-        my $cLength = -1;
         my $cRemaining = -1;
+        my $cFooters = 0;                                        # Are we processing footers? 
         while (my $line = getline($socket)) {
             
             ## Read the chunk header
-            if ($cLength == -1) {
+            if ($cRemaining == -1) {
                 $line =~ /^(\w+)/o;
-                $cLength = $cRemaining = hex($1);
-                printmsg("DEBUG => Receiving chunked message: $cLength bytes", 2);
+                $cRemaining = hex($1);
+                printmsg("DEBUG => Receiving chunked message: $cRemaining bytes", 2);
+                ## Chunk footers are indicated by a chunk length of 0. 
+                if( $cRemaining == 0 ) { $cFooters = 1; next; }
             }
             
             ## Receive the body of the chunked message
@@ -1274,14 +1279,19 @@ sub getPage {
                 $cRemaining -= length($line);
                 $data .= substr($line, 0, $cRemaining);
             }
-            
-            ## cRemaining will be -2 when we're done receiving a chunk
-            ## so read any remaining chunk footers
-            elsif ($cRemaining == -2) {
-                ## If we're at the end of footers, set $cRemaining to -1 so it will start reading headers again.
+            elsif( $cFooters ) {                                # If processing footers, then add footers to headers. (No, really).
                 if ($line eq "\r\n") {
-                    $cRemaining = -1;
+                    $cRemaining = -1;                           # End of footers.
+                } else { 
+                    $headers .= $line; 
                 }
+            } 
+
+            ## cRemaining will be -2 when we're done receiving a chunk 
+            ## so read any remaining chunk footers
+            if ($cRemaining == -2) {
+                                                                # Set $cRemaining to -1 so it will start reading chunk headers again.
+                $cRemaining = -1;                               # We should always start a new chunk once we're done with one.
             }
         }
     }
@@ -1412,7 +1422,7 @@ my $option_string = "";
 $opt{'unix_username'} = $conf{'unix_username'};
 foreach my $key (keys(%opt)) {
     ## If the value specified is a file, or -, load the file's contents (or STDIN) as the value
-    if ( (-e $opt{$key} and -r $opt{$key}) or ($opt{$key} eq '-') ) {
+    if ( (-e $opt{$key} and -r $opt{$key} and -f $opt{$key} ) or ($opt{$key} eq '-') ) {
         my $FILE;
         if(!open($FILE, ' ' . $opt{$key})) {
             quit("ERROR => couldn't open input file, $opt{$key}, $!", 1);
